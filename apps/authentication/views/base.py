@@ -59,6 +59,11 @@ class AuthIndex(StaffRequiredMixin, TemplateView):
 class Login(LoginView):
 
     class AuthForm(AuthenticationForm):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field in self.fields.values():
+                field.widget.attrs['class'] = 'form-control'
+                
         error_messages = {
             'invalid_login': _("Please enter a correct %(username)s and password. Note that both fields may be case-sensitive."),
             'inactive': _("UR CUSTOM MESSAGE"),
@@ -74,7 +79,7 @@ class Login(LoginView):
     authentication_form = AuthForm
     template_name = 'auth/login.html'
     login_url = reverse_lazy('login')
-    next_page = reverse_lazy('profile')
+    next_page = reverse_lazy('dashboard')
     redirect_authenticated_user = True # If it is false, authenticated_user is still access to login
 
 

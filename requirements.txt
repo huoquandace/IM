@@ -1,5 +1,6 @@
 Django
 xhtml2pdf
+termcolor
 
 drf_yasg
 djangorestframework-simplejwt
