@@ -1,0 +1,5 @@
+Django
+xhtml2pdf
+
+drf_yasg
+djangorestframework-simplejwt
