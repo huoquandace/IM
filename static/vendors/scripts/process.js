@@ -26,7 +26,7 @@ function animateValue(id, start, end, duration) {
 		if (current == end) {
 			clearInterval(timer);
 		}
-	}, stepTime);
+	}, stepTime/2);
 }
 
 // Fading Out Loadbar on Finised

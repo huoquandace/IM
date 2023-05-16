@@ -93,3 +93,4 @@ for file in os.listdir(BASE_DIR / 'apps'):
     if os.path.isdir(dir):
         try: __import__(dir.split('\\')[-1] + '.settings', fromlist='__all__')
         except ImportError: pass
+

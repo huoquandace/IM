@@ -275,14 +275,21 @@ class UserAddByInfo(LoginRequiredMixin, View):
     class UserProfileForm(forms.ModelForm):
         first_name = forms.CharField(max_length=100, required = False)
         last_name = forms.CharField(max_length=100, required = False)
-        
+        birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"type": "text", "class": "form-control date-picker", "autocomplete": "off"}))
+
         class Meta:
             model = Profile
             fields = ['first_name', 'last_name', 'gender', 'phone', 'age', 'birthday', 'avatar' ,'address',]
 
+        # def __init__(self, *args, **kwargs):
+        #     super().__init__(*args, **kwargs)
+        #     for field in self.fields.values():
+        #         field.widget.attrs['class'] = 'form-control'
+        
+
     class UserAddForm(forms.Form):
         username = forms.CharField(max_length=100, required = False)
-        password = forms.CharField(max_length=100, required = False)
+        password = forms.CharField(max_length=100, required = False, widget=forms.TextInput(attrs={"type": "password"}))
         
         def clean_username(self):
             username = self.cleaned_data['username']
@@ -291,6 +298,11 @@ class UserAddByInfo(LoginRequiredMixin, View):
             except get_user_model().DoesNotExist:
                 return username
             raise forms.ValidationError(u'Username "%s" is already in use.' % username)
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field in self.fields.values():
+                field.widget.attrs['class'] = 'form-control'
 
     def get(self, request):
         return render(request, 'auth/user_add_by_info.html', {
@@ -328,6 +340,7 @@ class UserAddByInfo(LoginRequiredMixin, View):
                 user.save()
                 return redirect('user_list')
             else:
+                print(form.errors)
                 messages.error(request, form.errors)
                 return redirect('user_add_by_info')
         return render(request, 'auth/user_add_by_info.html', {
