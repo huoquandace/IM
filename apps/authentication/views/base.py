@@ -273,8 +273,8 @@ class UserDelete(DeleteView):
 class UserAddByInfo(LoginRequiredMixin, View):
     
     class UserProfileForm(forms.ModelForm):
-        first_name = forms.CharField(max_length=100, required = False)
-        last_name = forms.CharField(max_length=100, required = False)
+        first_name = forms.CharField(max_length=100, required = False, widget=forms.TextInput(attrs={"type": "text", "class": "form-control", "autocomplete": "off"}))
+        last_name = forms.CharField(max_length=100, required = False, widget=forms.TextInput(attrs={"type": "text", "class": "form-control", "autocomplete": "off"}))
         birthday = forms.DateField(required = False, widget=forms.TextInput(attrs={"type": "text", "class": "form-control date-picker", "autocomplete": "off"}))
 
         class Meta:
@@ -314,8 +314,9 @@ class UserAddByInfo(LoginRequiredMixin, View):
         def isBlank(s): return not(s and s.strip())
         def isNotBlank(s): return s and s.strip()
 
-        form = self.UserProfileForm(request.POST)
+        form = self.UserProfileForm(request.POST, request.FILES)
         acc_form = self.UserAddForm(request.POST)
+        print(request.FILES)
         if request.POST.get('custom_acc', 0) != 0:
             if acc_form.is_valid():
                 user = get_user_model()(username=acc_form.cleaned_data['username'])
